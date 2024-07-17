@@ -1,19 +1,28 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
+import { AuthContext } from "../../provider/AuthProvider";
+// import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Register = () => {
+  // const axiosSecure = useAxiosSecure();
   const [eye, setEye] = useState(false);
+  const {userRegister} = useContext(AuthContext);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm()
+  } = useForm();
   const onSubmit = (data) => {
-    console.log(data)
-}
-  
+    console.log(data);
+    userRegister(data);
+    // axiosSecure.post("/users", data)
+    // .then((res) => {
+    //   console.log(res);
+    // })
+
+  };
 
   const handelSeePass = () => {
     setEye(!eye);
@@ -29,23 +38,19 @@ const Register = () => {
                   Register now!
                 </h1>
                 <div className="py-6  text-black opacity-80  space-y-4">
-                  <p>
-                    Your journey to share money starts
-                    here!
-                  </p>
+                  <p>Your journey to share money starts here!</p>
                 </div>
               </div>
             </div>
           </div>
           {/* */}
           <div
-            
             className="card shrink-0 w-full md:w-1/2    bg-base-100 rounded-l-none rounded-r-none rounded-2xl md:rounded-l-2xl"
             data-aos="flip-left"
             data-aos-easing="ease-out-cubic"
             data-aos-duration="1000"
           >
-            <form  onSubmit={handleSubmit(onSubmit)} className="card-body ">
+            <form onSubmit={handleSubmit(onSubmit)} className="card-body ">
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Name</span>
@@ -57,9 +62,9 @@ const Register = () => {
                   className="input input-bordered"
                   {...register("name", { required: true })}
                 />
-                 {errors.name && (
-                    <span className="text-red-500">Name is required</span>
-                  )}
+                {errors.name && (
+                  <span className="text-red-500">Name is required</span>
+                )}
               </div>
               <div className="form-control">
                 <label className="label">
@@ -73,8 +78,8 @@ const Register = () => {
                   {...register("email", { required: true })}
                 />
                 {errors.email && (
-                    <span className="text-red-500">Email is required</span>
-                  )}
+                  <span className="text-red-500">Email is required</span>
+                )}
               </div>
               <div className="form-control">
                 <label className="label">
@@ -88,8 +93,8 @@ const Register = () => {
                   {...register("number", { required: true })}
                 />
                 {errors.number && (
-                    <span className="text-red-500">Number is required</span>
-                  )}
+                  <span className="text-red-500">Number is required</span>
+                )}
               </div>
               <div className="form-control relative">
                 <label className="label">
@@ -108,23 +113,21 @@ const Register = () => {
                   })}
                 />
                 {errors.pin?.type === "required" && (
-                    <span className="text-red-500">pin is required</span>
-                  )}
-                  {errors.pin?.type === "minLength" && (
-                    <span className="text-red-500">
-                      Pin Code must be 5 numbers
-                    </span>
-                  )}
-                  {errors.pin?.type === "maxLength" && (
-                    <span className="text-red-500">
-                      Pin Code must be 5 number
-                    </span>
-                  )}
-                  {errors.pin?.type === "pattern" && (
-                    <span className="text-red-500">
-                      Pin Code must be numbers
-                    </span>
-                  )}
+                  <span className="text-red-500">pin is required</span>
+                )}
+                {errors.pin?.type === "minLength" && (
+                  <span className="text-red-500">
+                    Pin Code must be 5 numbers
+                  </span>
+                )}
+                {errors.pin?.type === "maxLength" && (
+                  <span className="text-red-500">
+                    Pin Code must be 5 number
+                  </span>
+                )}
+                {errors.pin?.type === "pattern" && (
+                  <span className="text-red-500">Pin Code must be numbers</span>
+                )}
                 <Link
                   onClick={handelSeePass}
                   className="text-2xl absolute right-3 top-[48px]"
@@ -135,15 +138,12 @@ const Register = () => {
               <p>
                 <span className="font-bold">Note : </span>
                 <small className="text-black opacity-80">
-                  Your pin must be {" "}
-                  <span className="text-primary">5 numbers.</span> 
-                  
+                  Your pin must be{" "}
+                  <span className="text-primary">5 numbers.</span>
                 </small>
               </p>
               <div className="form-control mt-6">
-                <button className="btn bg-primary  text-white">
-                  Register
-                </button>
+                <button className="btn bg-primary  text-white">Register</button>
               </div>
 
               <p className="text-center font-roboto text-lg">
